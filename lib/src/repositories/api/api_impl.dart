@@ -7,7 +7,7 @@ class ApiImpl implements Api {
   ApiImpl(this.log);
 
   Future<void> delay() async {
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 1));
   }
   @override
   Future<bool> checkLogin(Login login) async {
