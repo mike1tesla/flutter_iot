@@ -1,4 +1,3 @@
-import 'package:meta/meta.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 part 'main_state.dart';
 
