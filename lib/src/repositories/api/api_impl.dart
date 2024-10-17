@@ -1,7 +1,10 @@
 import 'package:iot_app/src/models/login.dart';
 import 'package:iot_app/src/repositories/api/api.dart';
+import 'package:iot_app/src/repositories/log/log.dart';
 
 class ApiImpl implements Api {
+  Log log;
+  ApiImpl(this.log);
 
   Future<void> delay() async {
     await Future.delayed(Duration(seconds: 1));
