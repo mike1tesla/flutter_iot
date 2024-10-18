@@ -24,23 +24,26 @@ class Page extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<LoginCubit, LoginState>(
       builder: (context, state) {
-        return SafeArea(
-          child: Scaffold(
-            body: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              child: Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    buildPageTitle(),
-                    const SizedBox(height: 32),
-                    _buildFormLogin(),
-                    const SizedBox(height: 10),
-                    _buildOrSplitDivider(),
-                  ],
-                ),
+        return Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+
+          ),
+          body: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  buildPageTitle(),
+                  const SizedBox(height: 16),
+                  _buildFormLogin(),
+                  const SizedBox(height: 16),
+                  _buildOrSplitDivider(),
+                  const SizedBox(height: 16),
+                ],
               ),
             ),
           ),
@@ -49,7 +52,7 @@ class Page extends StatelessWidget {
     );
   }
 
-  Container buildPageTitle() {
+  Widget buildPageTitle() {
     return Container(
       width: double.infinity,
       height: 200,
@@ -96,11 +99,11 @@ class Page extends StatelessWidget {
           ElevatedButton(
             onPressed: () {},
             child: const Text(
-              "Login",
-              style: TextStyle(fontSize: 16),
+              "LOGIN",
+              style: TextStyle(fontSize: 16, color: Colors.white),
             ),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.lightGreenAccent,
+              backgroundColor: Colors.green,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
               minimumSize: const Size(double.infinity, 55),
             ),
