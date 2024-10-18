@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iot_app/main_cubit.dart';
+import 'package:iot_app/src/features/authentication/login/login_screen.dart';
 import 'package:iot_app/src/features/authentication/splash/splash_screen.dart';
 import 'package:iot_app/src/repositories/api/api.dart';
 import 'package:iot_app/src/repositories/api/api_impl.dart';
@@ -40,10 +41,18 @@ class Provider extends StatelessWidget {
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       onGenerateRoute: mainRoute,
       initialRoute: SplashScreen.route,
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.lightGreenAccent,
+          brightness: Brightness.light,
+          background: Colors.white,
+        ),
+        useMaterial3: true,
+      ),
     );
   }
 }

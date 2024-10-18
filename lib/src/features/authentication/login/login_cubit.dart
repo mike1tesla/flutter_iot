@@ -1,8 +1,10 @@
 import 'package:bloc/bloc.dart';
-import 'package:iot_app/src/common/enum/load_status.dart';
+import 'package:iot_app/src/utils/enum/load_status.dart';
 import 'package:iot_app/src/models/login.dart';
 import 'package:iot_app/src/repositories/api/api.dart';
 import 'package:meta/meta.dart';
+
+import '../../../utils/enum/load_status.dart';
 
 part 'login_state.dart';
 

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iot_app/src/features/authentication/login/login_screen.dart';
+import 'package:iot_app/src/features/authentication/welcom/welcom_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   static const String route = "SplashScreen";
@@ -15,10 +16,10 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(seconds: 3), () {
+    Future.delayed(Duration(seconds: 2), () {
       Navigator.of(context).pushReplacement(
         PageRouteBuilder(
-          pageBuilder: (context, animation1, animation2) => LoginScreen(),
+          pageBuilder: (context, animation1, animation2) => WelcomScreen(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             var begin = Offset(0.0, 1.0);
             var end = Offset.zero;
