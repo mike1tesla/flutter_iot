@@ -1,7 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iot_app/src/features/authentication/login/login_cubit.dart';
 import 'package:iot_app/src/repositories/api/api.dart';
 
@@ -27,7 +26,12 @@ class Page extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.white,
-
+            leading: IconButton(
+              onPressed: (){
+                Navigator.pop(context);
+              },
+              icon: const Icon(Icons.arrow_back_ios),
+            ),
           ),
           body: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(vertical: 16),
@@ -43,6 +47,7 @@ class Page extends StatelessWidget {
                   const SizedBox(height: 16),
                   _buildOrSplitDivider(),
                   const SizedBox(height: 16),
+                  _buildLoginWithPlatform(),
                 ],
               ),
             ),
@@ -74,10 +79,11 @@ class Page extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text("Username", style: TextStyle(fontSize: 16)),
+          const Text("Username", style: TextStyle(fontSize: 16, color: Colors.green,fontStyle: FontStyle.italic)),
           const SizedBox(height: 8),
           TextFormField(
             decoration: InputDecoration(
+              prefixIcon: const Icon(Icons.person_outline_outlined),
               hintText: "Please enter username",
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
@@ -85,27 +91,30 @@ class Page extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          const Text("Password", style: TextStyle(fontSize: 16)),
+          const Text("Password",style: TextStyle(fontSize: 16, color: Colors.green,fontStyle: FontStyle.italic)),
           const SizedBox(height: 8),
           TextFormField(
             decoration: InputDecoration(
+              prefixIcon: const Icon(Icons.key_outlined),
               hintText: "* * * * * * * *",
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
               ),
+              suffixIcon: const Icon(Icons.remove_red_eye_outlined)
             ),
+            obscureText: true,
           ),
           const SizedBox(height: 32),
           ElevatedButton(
             onPressed: () {},
-            child: const Text(
-              "LOGIN",
-              style: TextStyle(fontSize: 16, color: Colors.white),
-            ),
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.green,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
               minimumSize: const Size(double.infinity, 55),
+            ),
+            child: const Text(
+              "LOGIN",
+              style: TextStyle(fontSize: 16, color: Colors.white),
             ),
           )
         ],
@@ -116,8 +125,51 @@ class Page extends StatelessWidget {
     return Row(
       children: [
         Expanded(child: Container(height: 2, width: double.infinity, color: Colors.grey.shade200,)),
-        const Text("Or"),
+        Text("Or",style: TextStyle(color: Colors.grey.shade500),),
         Expanded(child: Container(height: 2, width: double.infinity, color: Colors.grey.shade200,)),
+      ],
+    );
+  }
+  Widget _buildLoginWithPlatform(){
+    return Column(
+      children: [
+        OutlinedButton(
+          onPressed: () {
+          },
+          style: OutlinedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            minimumSize: const Size(double.infinity, 55),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(width: 20, height: 20, child: SvgPicture.asset("assets/svg/google.svg")),
+              const SizedBox(width: 25,),
+              const Text("Login with Google", style: TextStyle(fontSize: 16),),
+            ],
+          ),
+        ),
+        const SizedBox( height: 15,),
+        OutlinedButton(
+          onPressed: () {
+          },
+          style: OutlinedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            minimumSize: const Size(double.infinity, 55),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(width: 20, height: 20, child: SvgPicture.asset("assets/svg/facebook.svg")),
+              const SizedBox(width: 25,),
+              const Text("Login with Facebook", style: TextStyle(fontSize: 16),),
+            ],
+          ),
+        ),
       ],
     );
   }
