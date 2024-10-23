@@ -13,7 +13,9 @@ class ApiImpl implements Api {
   Future<bool> checkLogin(Login login) async {
     await delay();
     if(login.username == "1" && login.password == "1") return Future(() => true);
-    else return Future(() => false);
+    else {
+      return Future(() => false);
+    }
   }
   
 }

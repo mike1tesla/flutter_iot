@@ -1,8 +1,12 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:iot_app/src/features/authentication/login/login_cubit.dart';
+import 'package:iot_app/src/features/authentication/login/bloc/login_cubit.dart';
+import 'package:iot_app/src/features/authentication/signup/signup_screen.dart';
 import 'package:iot_app/src/repositories/api/api.dart';
+
+import 'build_form_login.dart';
 
 class LoginScreen extends StatelessWidget {
   static const String route = "LoginScreen";
@@ -27,14 +31,13 @@ class Page extends StatelessWidget {
           appBar: AppBar(
             backgroundColor: Colors.white,
             leading: IconButton(
-              onPressed: (){
+              onPressed: () {
                 Navigator.pop(context);
               },
               icon: const Icon(Icons.arrow_back_ios),
             ),
           ),
           body: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(vertical: 16),
             child: Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -43,11 +46,11 @@ class Page extends StatelessWidget {
                 children: [
                   buildPageTitle(),
                   const SizedBox(height: 16),
-                  _buildFormLogin(),
+                  const BuildFormLogin(),
                   const SizedBox(height: 16),
-                  _buildOrSplitDivider(),
+                  const BuildOrSplitDivider(),
                   const SizedBox(height: 16),
-                  _buildLoginWithPlatform(),
+                  _buildLoginWithPlatform(context),
                 ],
               ),
             ),
@@ -60,82 +63,22 @@ class Page extends StatelessWidget {
   Widget buildPageTitle() {
     return Container(
       width: double.infinity,
-      height: 200,
+      height: 160,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: Colors.blue),
       ),
       child: const Center(
-        child: Text(
-          "Login",
-          style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-        ),
+        child: Text("Login", style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
       ),
     );
   }
 
-  Widget _buildFormLogin() {
-    return Form(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text("Username", style: TextStyle(fontSize: 16, color: Colors.green,fontStyle: FontStyle.italic)),
-          const SizedBox(height: 8),
-          TextFormField(
-            decoration: InputDecoration(
-              prefixIcon: const Icon(Icons.person_outline_outlined),
-              hintText: "Please enter username",
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-            ),
-          ),
-          const SizedBox(height: 16),
-          const Text("Password",style: TextStyle(fontSize: 16, color: Colors.green,fontStyle: FontStyle.italic)),
-          const SizedBox(height: 8),
-          TextFormField(
-            decoration: InputDecoration(
-              prefixIcon: const Icon(Icons.key_outlined),
-              hintText: "* * * * * * * *",
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-              suffixIcon: const Icon(Icons.remove_red_eye_outlined)
-            ),
-            obscureText: true,
-          ),
-          const SizedBox(height: 32),
-          ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.green,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-              minimumSize: const Size(double.infinity, 55),
-            ),
-            child: const Text(
-              "LOGIN",
-              style: TextStyle(fontSize: 16, color: Colors.white),
-            ),
-          )
-        ],
-      ),
-    );
-  }
-  Widget _buildOrSplitDivider(){
-    return Row(
-      children: [
-        Expanded(child: Container(height: 2, width: double.infinity, color: Colors.grey.shade200,)),
-        Text("Or",style: TextStyle(color: Colors.grey.shade500),),
-        Expanded(child: Container(height: 2, width: double.infinity, color: Colors.grey.shade200,)),
-      ],
-    );
-  }
-  Widget _buildLoginWithPlatform(){
+  Widget _buildLoginWithPlatform(BuildContext context) {
     return Column(
       children: [
         OutlinedButton(
-          onPressed: () {
-          },
+          onPressed: () {},
           style: OutlinedButton.styleFrom(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
@@ -145,16 +88,15 @@ class Page extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(width: 20, height: 20, child: SvgPicture.asset("assets/svg/google.svg")),
-              const SizedBox(width: 25,),
-              const Text("Login with Google", style: TextStyle(fontSize: 16),),
+              SvgPicture.asset("assets/svg/google.svg", height: 20, width: 20, fit: BoxFit.contain),
+              const SizedBox(width: 25),
+              const Text("Login with Google", style: TextStyle(fontSize: 16)),
             ],
           ),
         ),
-        const SizedBox( height: 15,),
+        const SizedBox(height: 15),
         OutlinedButton(
-          onPressed: () {
-          },
+          onPressed: () {},
           style: OutlinedButton.styleFrom(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
@@ -164,15 +106,57 @@ class Page extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(width: 20, height: 20, child: SvgPicture.asset("assets/svg/facebook.svg")),
-              const SizedBox(width: 25,),
-              const Text("Login with Facebook", style: TextStyle(fontSize: 16),),
+              SvgPicture.asset("assets/svg/facebook.svg", height: 20, width: 20, fit: BoxFit.contain),
+              const SizedBox(width: 25),
+              const Text("Login with Facebook", style: TextStyle(fontSize: 16)),
             ],
           ),
         ),
+        const SizedBox(height: 20),
+        RichText(
+          text: TextSpan(
+            text: "Don't have an account? ",
+            style: const TextStyle(color: Colors.black),
+            children: [
+              TextSpan(
+                text: "Register",
+                style: const TextStyle(color: Colors.blue),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () {
+                    Navigator.of(context).pushNamed(SignUpScreen.route);
+                  },
+              )
+            ],
+          ),
+        )
       ],
     );
   }
 }
 
+class BuildOrSplitDivider extends StatelessWidget {
+  const BuildOrSplitDivider({
+    super.key,
+  });
 
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+            child: Container(
+          height: 2,
+          width: double.infinity,
+          color: Colors.grey.shade200,
+        )),
+        Text("Or", style: TextStyle(color: Colors.grey.shade500)),
+        Expanded(
+            child: Container(
+          height: 2,
+          width: double.infinity,
+          color: Colors.grey.shade200,
+        )),
+      ],
+    );
+  }
+}
