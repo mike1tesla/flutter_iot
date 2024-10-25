@@ -5,12 +5,12 @@ class BuildFormLogin extends StatefulWidget {
   const BuildFormLogin({
     super.key,
   });
-
   @override
   State<BuildFormLogin> createState() => _BuildFormLoginState();
 }
 
 class _BuildFormLoginState extends State<BuildFormLogin> {
+  final _formKey = GlobalKey<FormState>();
   bool _obscureText = true;
   void _toggle() {
     setState(() {
@@ -20,6 +20,7 @@ class _BuildFormLoginState extends State<BuildFormLogin> {
   @override
   Widget build(BuildContext context) {
     return Form(
+      key: _formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -56,10 +57,20 @@ class _BuildFormLoginState extends State<BuildFormLogin> {
               ),
             ),
             obscureText: _obscureText,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return '';
+              }
+              return null;
+            },
           ),
           const SizedBox(height: 32),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              if(_formKey.currentState!.validate()){
+                
+              }
+            },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.green,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "466599615724",
+    "project_id": "flutter-iot-fffd8",
+    "storage_bucket": "flutter-iot-fffd8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:466599615724:android:cbd22a9e9b2bd6536f59c9",
+        "android_client_info": {
+          "package_name": "com.m1ketesla.iot_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiEGvNAqDO62GmbuS7U2DD-dng63Xm0Sk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
