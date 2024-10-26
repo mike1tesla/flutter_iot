@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iot_app/main_cubit.dart';
-import 'package:iot_app/src/features/authentication/login/login_screen.dart';
 import 'package:iot_app/src/features/authentication/splash/splash_screen.dart';
 import 'package:iot_app/src/repositories/api/api.dart';
 import 'package:iot_app/src/repositories/api/api_impl.dart';
 import 'package:iot_app/src/repositories/log/log.dart';
 import 'package:iot_app/src/repositories/log/log_impl.dart';
 import 'package:iot_app/src/routing/route.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(
     RepositoryProvider<Log>(
       create: (context) => LogImpl(),

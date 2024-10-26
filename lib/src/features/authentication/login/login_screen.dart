@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iot_app/src/features/authentication/login/bloc/login_cubit.dart';
 import 'package:iot_app/src/features/authentication/signup/signup_screen.dart';
-import 'package:iot_app/src/repositories/api/api.dart';
 
 import 'build_form_login.dart';
 
@@ -16,7 +15,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => LoginCubit(context.read<Api>()),
+      create: (context) => LoginCubit(),
       child: Page(),
     );
   }
