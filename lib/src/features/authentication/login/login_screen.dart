@@ -81,7 +81,9 @@ class Page extends StatelessWidget {
     return Column(
       children: [
         OutlinedButton(
-          onPressed: () {},
+          onPressed: () {
+            context.read<LoginCubit>().signInAnonymous();
+          },
           style: OutlinedButton.styleFrom(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),

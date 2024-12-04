@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iot_app/main_cubit.dart';
 import 'package:iot_app/src/features/authentication/splash/splash_screen.dart';
+import 'package:iot_app/src/features/core/home/home_screen.dart';
 import 'package:iot_app/src/repositories/api/api.dart';
 import 'package:iot_app/src/repositories/api/api_impl.dart';
 import 'package:iot_app/src/repositories/authentication/authentication_repositories.dart';
@@ -19,8 +20,15 @@ void main() async {
   );
 
   runApp(
-    RepositoryProvider<Log>(
-      create: (context) => LogImpl(),
+    MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider<Log>(
+          create: (context) => LogImpl(),
+        ),
+        // RepositoryProvider(
+        //   create: (context) => FirebaseAuthService(),
+        // ),
+      ],
       child: Repository(),
     ),
   );
@@ -34,6 +42,7 @@ class Repository extends StatefulWidget {
 class _RepositoryState extends State<Repository> {
   late final AuthenticationRepository _authenticationRepository;
   late final FirebaseAuthService _firebaseAuthService;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -41,16 +50,13 @@ class _RepositoryState extends State<Repository> {
     _firebaseAuthService = FirebaseAuthService();
     _authenticationRepository = AuthenticationRepositoryImpl(firebaseAuthService: _firebaseAuthService);
   }
+
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
-        RepositoryProvider<Api>(
-          create: (context) => ApiImpl(context.read<Log>()),
-        ),
-        RepositoryProvider<AuthenticationRepository>(
-          create: (context) => _authenticationRepository,
-        ),
+        RepositoryProvider<Api>(create: (context) => ApiImpl(context.read<Log>())),
+        RepositoryProvider<AuthenticationRepository>(create: (context) => _authenticationRepository),
       ],
       child: Provider(),
     );

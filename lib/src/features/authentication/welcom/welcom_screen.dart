@@ -22,27 +22,27 @@ class WelcomScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).pushNamed(LoginScreen.route);
               },
-              child: const Text("LOGIN", style: TextStyle(color: Colors.white, fontSize: 16),),
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),
                 backgroundColor: Colors.green,
-                minimumSize: Size(double.infinity, 55),
+                minimumSize: const Size(double.infinity, 55),
               ),
+              child: const Text("LOGIN", style: TextStyle(color: Colors.white, fontSize: 16),),
             ),
             const SizedBox(height: 16), // Khoảng cách giữa hai nút
             OutlinedButton(
               onPressed: () {
                 Navigator.of(context).pushNamed(SignUpScreen.route);
               },
-              child: const Text("CREATE ACCOUNT", style: TextStyle(fontSize: 16),),
               style: OutlinedButton.styleFrom(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),
-                minimumSize: Size(double.infinity, 55),
+                minimumSize: const Size(double.infinity, 55),
               ),
+              child: const Text("CREATE ACCOUNT", style: TextStyle(fontSize: 16),),
             ),
             const SizedBox(height: 32),
           ],
