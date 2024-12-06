@@ -1,5 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:google_generative_ai/google_generative_ai.dart';
 
 import '../../models/message.dart';
 
@@ -13,26 +14,53 @@ class GeminiChat extends StatefulWidget {
 }
 
 class _GeminiChatState extends State<GeminiChat> {
-  final List<Message> _messages = [
-    Message(value: "Hi", isUser: true),
-    Message(value: 'Hello! Can I help you?', isUser: false),
-    Message(value: 'What day is today?', isUser: true),
-    Message(value: '06/12/2024', isUser: false),
-  ];
+  final TextEditingController _controller = TextEditingController();
+  final List<Message> _messages = [];
+  bool isSending = false; // Trạng thái kiểm tra khi đang gửi dữ liệu
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: _buildAppBar(),
-      body: Column(
-        children: [
-          Expanded(
-            child: buildChatBox(),
-          ),
-          buildInputValue()
-        ],
+      body: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              child: buildChatBox(),
+            ),
+            buildInputValue()
+          ],
+        ),
       ),
     );
+  }
+
+  callGeminiModel() async {
+    if (isSending || _controller.text.isEmpty) return; // Ngăn gửi nếu đang xử lý hoặc prompt trống
+    setState(() {
+      isSending = true;
+      _messages.add(Message(value: _controller.text, isUser: true)); // Thêm prompt người dùng vào danh sách
+    });
+    try {
+      final model = GenerativeModel(
+        model: 'gemini-pro',
+        apiKey: dotenv.env['GOOGLE_API_KEY'].toString(),
+      );
+      final prompt = _controller.text.trim();
+      final content = [Content.text(prompt)];
+      final response = await model.generateContent(content);
+      setState(() {
+        _messages.add(Message(value: response.text!.trim(), isUser: false)); // Thêm phản hồi từ API
+        isSending = false;
+        _controller.clear(); // Xóa nội dung nhập liệu
+      });
+    } catch (e) {
+      print("ERROR: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error: $e")),
+      );
+    }
   }
 
   AppBar _buildAppBar() {
@@ -73,7 +101,9 @@ class _GeminiChatState extends State<GeminiChat> {
           ),
           GestureDetector(
             onTap: () {
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("hello")));
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("hello")),
+              );
             },
             child: const Icon(Icons.info, color: Colors.green),
           ),
@@ -86,13 +116,23 @@ class _GeminiChatState extends State<GeminiChat> {
     return Padding(
       padding: const EdgeInsets.only(left: 16, right: 16, bottom: 32, top: 16),
       child: Container(
-        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(32), boxShadow: [
-          BoxShadow(spreadRadius: 3, color: Colors.grey.withOpacity(0.5), blurRadius: 7, offset: const Offset(0, 3))
-        ]),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(32),
+          boxShadow: [
+            BoxShadow(
+              spreadRadius: 3,
+              color: Colors.grey.withOpacity(0.5),
+              blurRadius: 7,
+              offset: const Offset(0, 3),
+            )
+          ],
+        ),
         child: Row(
           children: [
             Expanded(
               child: TextField(
+                controller: _controller,
                 decoration: InputDecoration(
                     border: InputBorder.none,
                     contentPadding: const EdgeInsets.symmetric(horizontal: 20),
@@ -100,14 +140,20 @@ class _GeminiChatState extends State<GeminiChat> {
                     hintStyle: TextStyle(color: Colors.grey[300])),
               ),
             ),
-            const SizedBox(width: 8),
-            const Icon(
-              Icons.send,
-              color: Colors.green,
-            ),
-            const SizedBox(
-              width: 8,
-            )
+            isSending
+                ? Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 8),
+                    width: 20,
+                    height: 20,
+                    child: const CircularProgressIndicator(color: Colors.green),
+                  )
+                : Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: GestureDetector(
+                      onTap: callGeminiModel,
+                      child: const Icon(Icons.send, color: Colors.green),
+                    ),
+                  ),
           ],
         ),
       ),
@@ -116,9 +162,11 @@ class _GeminiChatState extends State<GeminiChat> {
 
   Widget buildChatBox() {
     return ListView.builder(
+      reverse: true, // Hiển thị tin nhắn mới nhất ở cuối
       itemCount: _messages.length,
       itemBuilder: (context, index) {
-        final isUser = _messages[index].isUser;
+        final message = _messages[_messages.length - index - 1]; // build tin nhan ở cuoi
+        final isUser = message.isUser;
         return ListTile(
           title: Align(
             alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
@@ -134,7 +182,7 @@ class _GeminiChatState extends State<GeminiChat> {
                 ),
               ),
               child: Text(
-                _messages[index].value,
+                message.value,
                 style: TextStyle(color: isUser ? Colors.white : Colors.black),
               ),
             ),
