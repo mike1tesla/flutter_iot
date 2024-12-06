@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iot_app/main_cubit.dart';
 import 'package:iot_app/src/features/authentication/splash/splash_screen.dart';
 import 'package:iot_app/src/features/core/home/home_screen.dart';
+import 'package:iot_app/src/features/gemini_chat/gemini_chat.dart';
 import 'package:iot_app/src/repositories/api/api.dart';
 import 'package:iot_app/src/repositories/api/api_impl.dart';
 import 'package:iot_app/src/repositories/authentication/authentication_repositories.dart';
@@ -79,12 +80,15 @@ class App extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       onGenerateRoute: mainRoute,
-      initialRoute: SplashScreen.route,
+      initialRoute: GeminiChat.route,
+      darkTheme: ThemeData.dark(),
+      themeMode: ThemeMode.system,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.lightGreenAccent,
+          seedColor: Colors.white,
           brightness: Brightness.light,
           background: Colors.white,
+          // secondary: Colors.white
         ),
         useMaterial3: true,
       ),

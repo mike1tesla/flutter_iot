@@ -5,6 +5,7 @@ import 'package:iot_app/src/features/authentication/signup/signup_screen.dart';
 import 'package:iot_app/src/features/authentication/splash/splash_screen.dart';
 import 'package:iot_app/src/features/authentication/welcom/welcom_screen.dart';
 import 'package:iot_app/src/features/core/home/home_screen.dart';
+import 'package:iot_app/src/features/gemini_chat/gemini_chat.dart';
 
 Route<dynamic>? mainRoute(RouteSettings settings) {
   switch (settings.name) {
@@ -18,6 +19,8 @@ Route<dynamic>? mainRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => const SignUpScreen());
     case HomeScreen.route:
       return MaterialPageRoute(builder: (context) => const HomeScreen());
+    case GeminiChat.route:
+      return MaterialPageRoute(builder: (context) => const GeminiChat());
     default:
       return MaterialPageRoute(builder: (context) => const LoginScreen());
 
